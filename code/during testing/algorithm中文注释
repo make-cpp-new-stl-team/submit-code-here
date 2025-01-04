@@ -1,0 +1,135 @@
+// Copyright (C) 2001-2020 Free Software Foundation, Inc.
+//
+// This file is part of the GNU ISO C++ Library.  This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
+
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// Under Section 7 of GPL version 3, you are granted additional
+// permissions described in the GCC Runtime Library Exception, version
+// 3.1, as published by the Free Software Foundation.
+
+// You should have received a copy of the GNU General Public License and
+// a copy of the GCC Runtime Library Exception along with this program;
+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+// <http://www.gnu.org/licenses/>.
+/*
+ *
+ * Copyright (c) 1994
+ * Hewlett-Packard Company
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  Hewlett-Packard Company makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided "as is" without express or implied warranty.
+ *
+ *
+ * Copyright (c) 1996,1997
+ * Silicon Graphics Computer Systems, Inc.
+ *
+ * Permission to use, copy, modify, distribute and sell this software
+ * and its documentation for any purpose is hereby granted without fee,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.  Silicon Graphics makes no
+ * representations about the suitability of this software for any
+ * purpose.  It is provided "as is" without express or implied warranty.
+ */
+/** @file include/algorithm
+ *  This is a Standard C++ Library header.
+ */
+// 版权所有 (C) 2001-2020 免费软件基金会 (Free Software Foundation, Inc.)。
+
+// 本文件是 GNU ISO C++ 库的一部分。此库是免费软件；您可以根据
+// 免费软件基金会发布的 GNU 通用公共许可证（GPL）条款来重新分发和/或修改它；
+// 无论是许可证版本 3，或（您选择的）任何更高版本。
+
+// 本库以“希望对您有用”的原则分发，但不附带任何保证；
+// 甚至不附带关于适销性或特定用途适用性的暗示性保证。
+// 详细信息请参阅 GNU 通用公共许可证。
+
+// 根据 GPL 第 3 版的第 7 条，您被授予额外的权限，
+// 这些权限在由免费软件基金会发布的 GCC 运行时库异常（版本 3.1）中有所描述。
+
+// 您应该已经随程序一起收到 GNU 通用公共许可证副本
+// 和 GCC 运行时库异常副本；请参阅文件 COPYING3 和 COPYING.RUNTIME。
+// 如果没有，请参阅 <http://www.gnu.org/licenses/>。
+/*
+
+*
+* 版权所有 (c) 1994
+* 惠普公司（Hewlett-Packard Company）
+*
+* 在此，授予您使用、复制、修改、分发和销售此软件及其文档的权限，
+* 允许您无偿地进行上述操作，前提是所有副本中必须包含上述版权声明，
+* 并且该版权声明和本许可声明必须出现在支持文档中。
+* 惠普公司对于该软件是否适用于任何目的不作任何声明。
+* 本软件以“原样”提供，不附带任何明示或暗示的担保。
+*
+*
+* 版权所有 (c) 1996,1997
+* 硅谷图形计算机系统公司（Silicon Graphics Computer Systems, Inc.）
+*
+* 在此，授予您使用、复制、修改、分发和销售此软件及其文档的权限，
+* 允许您无偿地进行上述操作，前提是所有副本中必须包含上述版权声明，
+* 并且该版权声明和本许可声明必须出现在支持文档中。
+* 硅谷图形公司对于该软件是否适用于任何目的不作任何声明。
+* 本软件以“原样”提供，不附带任何明示或暗示的担保。
+
+*/
+/** @file include/algorithm
+ *  这是一个标准 C++ 库头文件。
+ */
+
+#ifndef _GLIBCXX_ALGORITHM
+#define _GLIBCXX_ALGORITHM 1
+// 如果没有定义 _GLIBCXX_ALGORITHM，定义它为 1，防止多次包含同一文件
+
+#pragma GCC system_header
+// 指示这是一个系统头文件，告诉编译器跳过对此文件的警告
+
+#include <utility> 
+// 导入 <utility> 头文件
+
+#include <bits/stl_algobase.h>
+#include <bits/stl_algo.h>
+// 导入 <bits/stl_algobase.h> 与 <bits/stl_algo.h> 头文件
+
+#if __cplusplus > 201703L
+# include <bits/ranges_algo.h>
+#endif
+// 如果 C++ 版本大于 C++17，则导入 <bits/ranges_algo.h> 头文件
+
+// 如果 C++ 版本大于 C++14，则处理并行 STL 算法
+#if __cplusplus > 201402L
+// 如果启用了并行 STL 执行策略
+# if _PSTL_EXECUTION_POLICIES_DEFINED
+// 如果已包含 <execution> 头文件，则拉入并行算法的实现
+#  include <pstl/glue_algorithm_impl.h>
+#  else
+// 否则，只包含并行算法的前向声明
+#    include <pstl/glue_algorithm_defs.h>
+// 定义一个标志，表示并行算法的前向声明已被处理
+#    define _PSTL_ALGORITHM_FORWARD_DECLARED 1
+#  endif
+
+// 为并行算法定义特性测试宏
+# define __cpp_lib_parallel_algorithm 201603L
+#endif // C++17
+
+// 如果启用了并行算法支持，包含并行算法头文件
+#ifdef _GLIBCXX_PARALLEL
+# include <parallel/algorithm>
+#endif
+
+// 结束对 _GLIBCXX_ALGORITHM 的检查
+#endif /* _GLIBCXX_ALGORITHM */
